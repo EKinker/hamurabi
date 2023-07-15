@@ -122,13 +122,9 @@ public class HammurabiTest {
         }
     }
 
-   @Test // maybe delete
-    public void testPlague(){
-        Random random = new Random();
-        float chance = random.nextFloat()*100;
-        System.out.println( (int) chance);
 
-    }
+
+
 
 }
 
