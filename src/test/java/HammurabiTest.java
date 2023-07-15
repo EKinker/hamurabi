@@ -1,13 +1,14 @@
-package hammurabi;
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Random;
+
 public class HammurabiTest {
     
     Hammurabi ham;
+    int year = 1; //starts at year 1, will end at year 10
     
     boolean about(double expected, double actual) {
         return actual > 0.90 * expected && actual < 1.10 * expected;
@@ -119,6 +120,14 @@ public class HammurabiTest {
         for (int j = 17; j <= 23; j++) {
             assertTrue("You never have a land cost of " + j + " bushels per acre.", cost[j] > 0);
         }
+    }
+
+   @Test // maybe delete
+    public void testPlague(){
+        Random random = new Random();
+        float chance = random.nextFloat()*100;
+        System.out.println( (int) chance);
+
     }
 
 }
