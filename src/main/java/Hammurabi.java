@@ -33,19 +33,19 @@ public class Hammurabi {
         System.out.println(TextColor.TEXT_PURPLE + "O great Hammurabi!");
         System.out.printf(TextColor.TEXT_BLUE + "You are in year %d of your ten year rule.\n" + TextColor.TEXT_RESET, year);
         System.out.println("In the previous year " + TextColor.TEXT_RED + peopleStarved + TextColor.TEXT_RESET + " people starved to death.");
-        System.out.printf("In the previous year %d people entered the kingdom.\n", immigrants);
-        System.out.printf("The population is now %d.\n", people);
-        System.out.printf("We harvested %d bushels at 3 bushels per acre.\n", bushelsHarvested);
+        System.out.println("In the previous year "+TextColor.TEXT_BRIGHT_WHITE+immigrants+TextColor.TEXT_RESET+" people entered the kingdom.");
+        System.out.println("The population is now " +TextColor.TEXT_BRIGHT_WHITE+people+TextColor.TEXT_RESET+ " people.");
+        System.out.println("We harvested " +TextColor.TEXT_BRIGHT_WHITE+bushelsHarvested+TextColor.TEXT_RESET+" bushels at 3 bushels per acre.");
         System.out.println("Rats destroyed " + TextColor.TEXT_RED + bushelsRatted + TextColor.TEXT_RESET + " bushels, leaving " + TextColor.TEXT_BRIGHT_WHITE + totalBushels + TextColor.TEXT_RESET + " bushels in storage.");
-        System.out.println("city owns " + landAcres + " acres of land.");
-//        Land is currently worth 19 bushels per acre.
+        System.out.println("Our great city owns " +TextColor.TEXT_BRIGHT_WHITE+landAcres+TextColor.TEXT_RESET+ " acres of land.");
+        System.out.println("Land is currently worth "+TextColor.TEXT_BRIGHT_WHITE+landValue+TextColor.TEXT_RESET+" bushels per acre.");
         System.out.println(TextColor.TEXT_BLUE + "\n\nYear " + year + TextColor.TEXT_RESET);
 
 
     }
 
-    public int landChange(int price, int bushels, int land) {
-        int change = askHowManyAcresToBuy(price, bushels);
+    public int landChange(int landPrice, int bushels, int land) {
+        int change = askHowManyAcresToBuy(landPrice, bushels);
         if (change == 0) {
             change = -(askHowManyAcresToSell(land));
         }
