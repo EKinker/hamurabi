@@ -1,5 +1,6 @@
 //package hammurabi;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,13 +16,18 @@ public class Hammurabi {
 
     void playGame() {
         // declare local variables here: grain, population, etc.
-        int people = 100, grainBushels = 2800, landAcres = 1000, landValue = 19, year = 1;
-        int peopleStarved = 0, immigrants = 5, bushelsHarvested = 3000, foodEatenByRats = 200;
+        int people = 100, grainBushels = 2800, landAcres = 1000, landValue = 19,immigrants = 5, bushelsHarvested = 3000, foodEatenByRats = 200, year = 1;
+        int peopleStarved = 0, changeToLand, bushelsFed, acresPlanted;
 
         while (year <= 10) {//add loop while game is active
             printYearlyStatus(year, peopleStarved, immigrants, people, bushelsHarvested, foodEatenByRats, grainBushels, landAcres, landValue);
-
-            landAcres += landChange(landValue, grainBushels, landAcres);
+            //player input
+            changeToLand = landChange(landValue, grainBushels, landAcres);
+            landAcres += changeToLand;
+            grainBushels -= (changeToLand*landValue);
+            bushelsFed = askHowMuchGrainToFeedPeople(grainBushels, people);
+            grainBushels -= bushelsFed;
+            acresPlanted = askHowManyAcresToPlant(landAcres,people, grainBushels);
 
             year++;
         }
@@ -30,16 +36,16 @@ public class Hammurabi {
 
     public void printYearlyStatus(int year, int peopleStarved, int immigrants, int people, int bushelsHarvested, int bushelsRatted, int totalBushels, int landAcres, int landValue) { //start each round with an update
 
-        System.out.println(TextColor.TEXT_PURPLE + "O great Hammurabi!");
-        System.out.printf(TextColor.TEXT_BLUE + "You are in year %d of your ten year rule.\n" + TextColor.TEXT_RESET, year);
-        System.out.println("In the previous year " + TextColor.TEXT_RED + peopleStarved + TextColor.TEXT_RESET + " people starved to death.");
-        System.out.println("In the previous year "+TextColor.TEXT_BRIGHT_WHITE+immigrants+TextColor.TEXT_RESET+" people entered the kingdom.");
-        System.out.println("The population is now " +TextColor.TEXT_BRIGHT_WHITE+people+TextColor.TEXT_RESET+ " people.");
-        System.out.println("We harvested " +TextColor.TEXT_BRIGHT_WHITE+bushelsHarvested+TextColor.TEXT_RESET+" bushels at 3 bushels per acre.");
-        System.out.println("Rats destroyed " + TextColor.TEXT_RED + bushelsRatted + TextColor.TEXT_RESET + " bushels, leaving " + TextColor.TEXT_BRIGHT_WHITE + totalBushels + TextColor.TEXT_RESET + " bushels in storage.");
-        System.out.println("Our great city owns " +TextColor.TEXT_BRIGHT_WHITE+landAcres+TextColor.TEXT_RESET+ " acres of land.");
-        System.out.println("Land is currently worth "+TextColor.TEXT_BRIGHT_WHITE+landValue+TextColor.TEXT_RESET+" bushels per acre.");
-        System.out.println(TextColor.TEXT_BLUE + "\n\nYear " + year + TextColor.TEXT_RESET);
+        System.out.println(TextColor.PURPLE + "\n\n\n\n\n\nO great and wise Hammurabi!");
+        System.out.printf(TextColor.TEXT_BLUE + "You are in year %d of your ten year rule.\n" + _b(), year);
+        System.out.println("In the previous year " + TextColor.TEXT_RED + peopleStarved + _b() + " people starved to death.");
+        System.out.println("In the previous year "+b()+immigrants+_b() +" people entered the kingdom.");
+        System.out.println("The population is now " +b()+people+_b() + " people.");
+        System.out.println("We harvested " +b()+bushelsHarvested+_b() +" bushels at 3 bushels per acre.");
+        System.out.println("Rats destroyed " + TextColor.TEXT_RED + bushelsRatted + _b() + " bushels, leaving " + b()+ totalBushels + _b() + " bushels in storage.");
+        System.out.println("Our great city owns " +b()+landAcres+_b() + " acres of land.");
+        System.out.println("Land is currently worth "+b()+landValue+_b() +" bushels per acre.");
+        System.out.println(TextColor.TEXT_BLUE + "\n\nYear " + year + _b());
 
 
     }
@@ -53,36 +59,50 @@ public class Hammurabi {
     }
 
     int askHowManyAcresToBuy(int price, int bushels) {
-        System.out.println("Land costs " + TextColor.TEXT_BRIGHT_WHITE + price + TextColor.TEXT_RESET + " bushels per acre this year.");
-        System.out.println("You have " + TextColor.TEXT_BRIGHT_WHITE + bushels + TextColor.TEXT_RESET + " bushels to spend.");
-        System.out.println(TextColor.TEXT_CYAN + "How many acres of land shall we purchase?" + TextColor.TEXT_RESET);
-        int input = scanner.nextInt();
+        System.out.println("\nLand costs " + b()+ price + _b() + " bushels per acre this year.");
+        System.out.println("You have " + b()+ bushels + _b() + " bushels to spend.");
+
+        int input = getNumber(TextColor.CYAN + "How many acres of land shall we purchase? " + _b());
         while ((input * price) > bushels) {
-            System.out.println("O wise ruler, this would cost us " + (input * price) + " bushels of grain.  We do not have enough grain to purchase so much land!");
-            input = scanner.nextInt();
+            input = getNumber("O wise ruler, this would cost us " + (input * price) + " bushels of grain.  We do not have enough grain to purchase so much land! ");
         }
         return input;
     }
 
     int askHowManyAcresToSell(int acresOwned) {
-        System.out.println("We own " + TextColor.TEXT_BRIGHT_WHITE + acresOwned + TextColor.TEXT_RESET + " acres of land");
+        System.out.println("\nWe own " + b()+ acresOwned + _b() + " acres of land");
         System.out.println("Perhaps we should sell some land so our people have enough to eat.");
-        System.out.println(TextColor.TEXT_CYAN + "How many acres of land shall we sell?" + TextColor.TEXT_RESET);
-        int input = scanner.nextInt();
+
+        int input = getNumber(TextColor.CYAN + "How many acres of land shall we sell? " + _b());
         if (input > acresOwned) {
-            System.out.println("O wise ruler, we do not have " + input + " acres to sell.");
-            input = scanner.nextInt();
+            input = getNumber("O wise ruler, we do not have " + input + " acres to sell. ");
         }
         return input;
     }
 
-    int askHowMuchGrainToFeedPeople(int bushels) {
-        System.out.println();
-        return 0;
+    int askHowMuchGrainToFeedPeople(int bushels, int people) {  // need 20 grain per person
+        System.out.println("\nOh wise leader, we have "+b()+people+_b() + " people to feed and "+b()+bushels+_b() + " bushels of grain.");
+        System.out.println("We would need "+b()+(people *20)+_b() +" bushels to feed every person.");
+        int input = getNumber(TextColor.CYAN + "How many bushels of grain shall we feed our people? "+_b());
+        if (input > bushels) {
+            input = getNumber("Wise leader, we do not have enough grain.");
+        }
+        return input;
     }
 
-    int askHowManyAcresToPlant(int acresOwned, int population, int bushels) {
-        return 0;
+    int askHowManyAcresToPlant(int acresOwned, int population, int bushels) { // 2 bushels needed for each acre  //10 acres per person
+        System.out.println("\nWise leader, we must plant crops to so we may have enough grain next year.");
+        System.out.println("We own "+b()+ acresOwned+_b() +" acres of land.  We will need "+TextColor.BRIGHT_WHITE +(acresOwned*2)+_b() +" bushels to farm our land.");
+        System.out.println("We currently have " +b()+bushels+_b()+" bushels of grain, enough to plant "+ bushels/2+ " acres.");
+        int input = getNumber(TextColor.CYAN +"How many acres shall we plant?"+_b());
+        if (input > acresOwned){
+            input = getNumber("Wise leader, we do not own that many acres! ");
+        } else if (input > bushels/2){
+            input = getNumber("Wise leader, we do not have enough grain to plant that much! ");
+        } if (input/10 > population){
+            input = getNumber("Wise leader, we do not have enough people! We would need "+(input/10)+ "people to plant that many acres! ");
+        }
+        return input;
     }
 
     public int plagueDeaths(int population) {  //15% chance of plague
@@ -105,7 +125,7 @@ public class Hammurabi {
     public boolean uprising(int population, int howManyPeopleStarved) {
         int percentStarved = (100 * howManyPeopleStarved) / population;
 
-        return (percentStarved >= 45); // we can simplify the lines, sure.  Let's just test the methods first
+        return (percentStarved >= 45);
     }
 
     public int immigrants(int population, int acresOwned, int grainInStorage) { //
@@ -113,7 +133,7 @@ public class Hammurabi {
         return (20 * acresOwned + grainInStorage) / (100 * population) + 1; //taken from ReadMe
     }
 
-    public int harvest(int acres) { //test written to 1 parameter.  ReadMe uses and extra (int bushelsUsedAsSeed)
+    public int harvest(int acres) { //test written to 1 parameter.  ReadMe uses an extra (int bushelsUsedAsSeed)
         int yield = random.nextInt(6) + 1;  // random between 1 & 6
 
         return acres * yield;
@@ -135,6 +155,23 @@ public class Hammurabi {
     //add an end game condition.  Either everyone died, or you survived 10 years
 
     //other methods go here
+    int getNumber(String message) {
+        while (true) {
+            System.out.print(message);
+            try {
+                return scanner.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("\"" + scanner.next() + "\" isn't a number!");
+            }
+        }
 
+    }
+    public String b(){ //bold
+        return TextColor.BRIGHT_WHITE;
+    }
+    public String _b(){ //unbold/reset
+        return TextColor.RESET;
+    }
 
 }
