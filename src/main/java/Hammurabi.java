@@ -1,8 +1,5 @@
 //package hammurabi;
 
-import org.w3c.dom.Text;
-
-import java.sql.SQLOutput;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -10,8 +7,6 @@ import java.util.Scanner;
 public class Hammurabi {
     static Random random = new Random();
     Scanner scanner = new Scanner(System.in);
-
-    //int acresPurchased = 0;
 
 
     public static void main(String[] args) {
@@ -25,21 +20,11 @@ public class Hammurabi {
 
         while (year <= 10) {//add loop while game is active
             printYearlyStatus(year, peopleStarved, immigrants, people, bushelsHarvested, foodEatenByRats, grainBushels, landAcres, landValue);
-            int landChange;
-            if (( landChange = askHowManyAcresToBuy(landValue, grainBushels))==0){
-                landChange = -(askHowManyAcresToSell(landAcres));
 
-            }
+            landAcres += landChange(landValue, grainBushels, landAcres);
 
-//          process(landChange);
-
-
-
+            year++;
         }
-    }
-
-    private void process(int changeInLand) { // update values based on player input
-
     }
 
 
@@ -59,6 +44,13 @@ public class Hammurabi {
 
     }
 
+    public int landChange(int price, int bushels, int land) {
+        int change = askHowManyAcresToBuy(price, bushels);
+        if (change == 0) {
+            change = -(askHowManyAcresToSell(land));
+        }
+        return change;
+    }
 
     int askHowManyAcresToBuy(int price, int bushels) {
         System.out.println("Land costs " + TextColor.TEXT_BRIGHT_WHITE + price + TextColor.TEXT_RESET + " bushels per acre this year.");
@@ -85,6 +77,7 @@ public class Hammurabi {
     }
 
     int askHowMuchGrainToFeedPeople(int bushels) {
+        System.out.println();
         return 0;
     }
 
