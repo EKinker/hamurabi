@@ -25,25 +25,23 @@ public class Hammurabi {
 
         while (year <= 10) {//add loop while game is active
             printYearlyStatus(year, peopleStarved, immigrants, people, bushelsHarvested, foodEatenByRats, grainBushels, landAcres, landValue);
-            int landPurchased = askHowManyAcresToBuy(landValue, grainBushels);
-//        process();
+            int landChange;
+            if (( landChange = askHowManyAcresToBuy(landValue, grainBushels))==0){
+                landChange = -(askHowManyAcresToSell(landAcres));
+
+            }
+
+//          process(landChange);
 
 
-            // statements go after the declartions
+
         }
     }
 
-    private void process() { // update values based on player input
+    private void process(int changeInLand) { // update values based on player input
 
     }
 
-    /*private void getPlayerInput() { //player input for 4(?) options
-        System.out.println(TextColor.TEXT_BLUE + "\n\nYear " + year + TextColor.TEXT_RESET);
-        askHowManyAcresToBuy(landValue, grainBushels);
-        askHowManyAcresToSell(landAcres);
-    }
-
-     */
 
     public void printYearlyStatus(int year, int peopleStarved, int immigrants, int people, int bushelsHarvested, int bushelsRatted, int totalBushels, int landAcres, int landValue) { //start each round with an update
 
@@ -71,8 +69,6 @@ public class Hammurabi {
             System.out.println("O wise ruler, this would cost us " + (input * price) + " bushels of grain.  We do not have enough grain to purchase so much land!");
             input = scanner.nextInt();
         }
-//        landAcres += input;
-//        grainBushels -= input * price;
         return input;
     }
 
@@ -85,10 +81,7 @@ public class Hammurabi {
             System.out.println("O wise ruler, we do not have " + input + " acres to sell.");
             input = scanner.nextInt();
         }
-        //grainBushels+=input*landValue;
-
-
-        return 0;
+        return input;
     }
 
     int askHowMuchGrainToFeedPeople(int bushels) {
