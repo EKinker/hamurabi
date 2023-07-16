@@ -1,7 +1,6 @@
-//package hammurabi;
+//package java;
 
-import javax.swing.*;
-import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -38,9 +37,6 @@ public class Hammurabi {
             peopleStarved = starvationDeaths(people, bushelsFed);
             people -= peopleStarved;
             gameActive = !uprising(people, peopleStarved);
-//            if (uprising(people, peopleStarved)) {
-//                gameActive = false;
-//            }
             immigrants = immigrants(people, landAcres, grainBushels);
             people += immigrants;
             bushelsHarvested = harvest(acresPlanted);
@@ -48,7 +44,6 @@ public class Hammurabi {
             foodEatenByRats = grainEatenByRats(grainBushels);
             grainBushels -= foodEatenByRats;
             landValue = newCostOfLand();
-
 
             year++;
         }
@@ -92,16 +87,25 @@ public class Hammurabi {
         while ((input * price) > bushels) {
             input = getNumber("O wise ruler, this would cost us " + (input * price) + " bushels of grain.  We do not have enough grain to purchase so much land! ");
         }
+        if(input<0){
+            System.out.println(TextColor.YELLOW+ "Perhaps you wish to sell some land instead? "+_b());
+            input = 0;
+        }
+
         return input;
     }
 
     int askHowManyAcresToSell(int acresOwned) {
         System.out.println("\nWe own " + b() + acresOwned + _b() + " acres of land");
-        System.out.println("Perhaps we should sell some land so our people have enough to eat.");
+        System.out.println("We should sell some land so our people have enough to eat.");
 
         int input = getNumber(TextColor.CYAN + "How many acres of land shall we sell? " + _b());
-        if (input > acresOwned) {
+        while (input > acresOwned) {
             input = getNumber("O wise ruler, we do not have " + input + " acres to sell. ");
+        }
+        while (input < 0) {
+            System.out.println(TextColor.YELLOW+ "Sir, the time to buy land is over.  We must wait until next year."+_b());
+            input = 0;
         }
         return input;
     }
@@ -110,7 +114,10 @@ public class Hammurabi {
         System.out.println("\nOh wise leader, we have " + b() + people + _b() + " people to feed and " + b() + bushels + _b() + " bushels of grain.");
         System.out.println("We would need " + b() + (people * 20) + _b() + " bushels to feed every person.");
         int input = getNumber(TextColor.CYAN + "How many bushels of grain shall we feed our people? " + _b());
-        if (input > bushels) {
+        while(input<0){
+            input = getNumber(TextColor.YELLOW+ "Sir, surely you do not wish to rob our people of their food? "+_b());
+        }
+        while (input > bushels) {
             input = getNumber("Wise leader, we do not have enough grain.");
         }
         return input;
@@ -121,12 +128,16 @@ public class Hammurabi {
         System.out.println("We own " + b() + acresOwned + _b() + " acres of land.  We will need " + b() + (acresOwned * 2) + _b() + " bushels to farm our land.");
         System.out.println("We currently have " + b() + bushels + _b() + " bushels of grain, enough to plant " + bushels / 2 + " acres.");
         int input = getNumber(TextColor.CYAN + "How many acres shall we plant? " + _b());
-        if (input > acresOwned) {
+        while (input < 0) {
+            input = getNumber(TextColor.YELLOW+ "My humble apologies, wise leader.  I must have misheard your order. "+_b());
+        }
+        while (input > acresOwned) {
             input = getNumber("Wise leader, we do not own that many acres! ");
-        } else if (input > bushels / 2) {
+        }
+        while (input > bushels / 2) {
             input = getNumber("Wise leader, we do not have enough grain to plant that much! ");
         }
-        if (input / 10 > population) {
+        while (input / 10 > population) {
             input = getNumber("Wise leader, we do not have enough people! We would need " + b() + (input / 10) + _b() + " farmers to plant that many acres! \n We currently have enough people to plant " + b() + population * 10 + _b() + " acres. ");
         }
         return input;
@@ -201,7 +212,6 @@ public class Hammurabi {
                 System.out.println("\"" + scanner.next() + "\" isn't a number!");
             }
         }
-
     }
 
     public String b() { //bold/highlight
