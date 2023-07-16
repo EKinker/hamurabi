@@ -1,5 +1,7 @@
 //package hammurabi;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -10,11 +12,15 @@ public class Hammurabi {
     Scanner scanner = new Scanner(System.in);
 
 
+
+
     public static void main(String[] args) {
         new Hammurabi().playGame();
     }
 
     void playGame() {
+
+
         // declare local variables here: grain, population, etc.
         int people = 100, grainBushels = 2800, landAcres = 1000, landValue = 19, immigrants = 5, bushelsHarvested = 3000, foodEatenByRats = 200, year = 1;
         int peopleStarved = 0, changeToLand, bushelsFed, acresPlanted = 1000;
@@ -53,13 +59,16 @@ public class Hammurabi {
 
 
     public void printYearlyStatus(int year, int peopleStarved, int immigrants, int people, int bushelsHarvested, int bushelsRatted, int totalBushels, int landAcres, int landValue, int landPlanted) { //start each round with an update
-
+        int harvestRate;
+        if (landPlanted==0){
+            harvestRate = 0;
+        } else {harvestRate =bushelsHarvested / landPlanted;}
         System.out.println(TextColor.PURPLE + "\n\n\nO great and wise Hammurabi!");
         System.out.printf(TextColor.BLUE + "You are in year %d of your ten year rule.\n" + _b(), year);
         System.out.println("In the previous year " + TextColor.RED + peopleStarved + _b() + " people starved to death.");
         System.out.println("In the previous year " + b() + immigrants + _b() + " people entered the kingdom.");
         System.out.println("The population is now " + b() + people + _b() + " people.");
-        System.out.println("We harvested " + b() + bushelsHarvested + _b() + " bushels at " + b() + bushelsHarvested / landPlanted + _b() + " bushels per acre.");
+        System.out.println("We harvested " + b() + bushelsHarvested + _b() + " bushels at " + b() + harvestRate + _b() + " bushels per acre.");
         System.out.println("Rats destroyed " + TextColor.RED + bushelsRatted + _b() + " bushels, leaving " + b() + totalBushels + _b() + " bushels in storage.");
         System.out.println("Our great city owns " + b() + landAcres + _b() + " acres of land.");
         System.out.println("Land is currently worth " + b() + landValue + _b() + " bushels per acre.");
