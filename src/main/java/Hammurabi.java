@@ -36,7 +36,6 @@ public class Hammurabi {
             peopleStarved = starvationDeaths(people, bushelsFed);
             people -= peopleStarved;
             if (uprising(people, peopleStarved)) {
-                System.out.println("Oh no!");
                 gameActive = false;
             }
             immigrants = immigrants(people, landAcres, grainBushels);
@@ -56,15 +55,15 @@ public class Hammurabi {
     public void printYearlyStatus(int year, int peopleStarved, int immigrants, int people, int bushelsHarvested, int bushelsRatted, int totalBushels, int landAcres, int landValue, int landPlanted) { //start each round with an update
 
         System.out.println(TextColor.PURPLE + "\n\n\nO great and wise Hammurabi!");
-        System.out.printf(TextColor.TEXT_BLUE + "You are in year %d of your ten year rule.\n" + _b(), year);
-        System.out.println("In the previous year " + TextColor.TEXT_RED + peopleStarved + _b() + " people starved to death.");
+        System.out.printf(TextColor.BLUE + "You are in year %d of your ten year rule.\n" + _b(), year);
+        System.out.println("In the previous year " + TextColor.RED + peopleStarved + _b() + " people starved to death.");
         System.out.println("In the previous year " + b() + immigrants + _b() + " people entered the kingdom.");
         System.out.println("The population is now " + b() + people + _b() + " people.");
         System.out.println("We harvested " + b() + bushelsHarvested + _b() + " bushels at " + b() + bushelsHarvested / landPlanted + _b() + " bushels per acre.");
-        System.out.println("Rats destroyed " + TextColor.TEXT_RED + bushelsRatted + _b() + " bushels, leaving " + b() + totalBushels + _b() + " bushels in storage.");
+        System.out.println("Rats destroyed " + TextColor.RED + bushelsRatted + _b() + " bushels, leaving " + b() + totalBushels + _b() + " bushels in storage.");
         System.out.println("Our great city owns " + b() + landAcres + _b() + " acres of land.");
         System.out.println("Land is currently worth " + b() + landValue + _b() + " bushels per acre.");
-        System.out.println(TextColor.TEXT_BLUE + "\n\nYear " + year + _b());
+        System.out.println(TextColor.BLUE + "\n\nYear " + year + _b());
 
 
     }
@@ -130,7 +129,7 @@ public class Hammurabi {
         int chance = random.nextInt(100) + 1; //generate a random # between 1 & 100
         if (chance <= 15) {
             deaths = population / 2;
-            System.out.println(TextColor.TEXT_BRIGHT_RED + "\n\nA plague has swept over the population! " + deaths + " of our people have died!" + _b());
+            System.out.println(TextColor.BRIGHT_RED + "\n\nA plague has swept over the population! " + deaths + " of our people have died!" + _b());
         }  // if chance is less than 15, trigger plague
         return deaths;
     }
@@ -144,13 +143,21 @@ public class Hammurabi {
     }  //
 
     public boolean uprising(int population, int howManyPeopleStarved) {
-        int percentStarved = (100 * howManyPeopleStarved) / population;
+        if (population == 0) {
+            everyoneDied();
+            return true;
+        }
+            int percentStarved = (100 * howManyPeopleStarved) / population;
+            if (percentStarved >= 45) {
+                System.out.println(TextColor.BRIGHT_RED + "\n\nToo many of our people have starved. Your subjects have revolted!" + _b());
+                return true;
+            }
 
-        return (percentStarved >= 45);
+        return false;
     }
 
     public int immigrants(int population, int acresOwned, int grainInStorage) { //
-
+        if (population == 0){return 0;}
         return (20 * acresOwned + grainInStorage) / (100 * population) + 1; //taken from ReadMe
     }
 
@@ -175,7 +182,6 @@ public class Hammurabi {
 
     //add an end game condition.  Either everyone died, or you survived 10 years
 
-    //other methods go here
     int getNumber(String message) {
         while (true) {
             System.out.print(message);
@@ -194,6 +200,11 @@ public class Hammurabi {
 
     public String _b() { //unbold/reset
         return TextColor.RESET;
+    }
+
+    public void everyoneDied(){
+        System.out.println(TextColor.BRIGHT_RED + "\n\nSir! We forgot to feed our people!  Everyone is dead!" + _b());
+
     }
 
 }
