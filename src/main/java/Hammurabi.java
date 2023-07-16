@@ -20,6 +20,7 @@ public class Hammurabi {
         int people = 100, grainBushels = 2800, landAcres = 1000, landValue = 19, immigrants = 5, bushelsHarvested = 3000, foodEatenByRats = 200, year = 1;
         int peopleStarved = 0, changeToLand, bushelsFed, acresPlanted = 1000;
         boolean gameActive = true;
+        int totalDeaths = 0, totalPeople = 100;
 
         while (year <= 10 && gameActive) {//add loop while game is active
             printYearlyStatus(year, peopleStarved, immigrants, people, bushelsHarvested, foodEatenByRats, grainBushels, landAcres, landValue, acresPlanted);
@@ -46,7 +47,10 @@ public class Hammurabi {
             landValue = newCostOfLand();
 
             year++;
+            totalDeaths+= peopleStarved;
+            totalPeople += immigrants;
         }
+        endGame(totalDeaths,totalPeople);
     }
 
 
@@ -224,7 +228,14 @@ public class Hammurabi {
 
     public void everyoneDied() {
         System.out.println(TextColor.BRIGHT_RED + "\n\nSir! We forgot to feed our people!  Everyone is dead!" + _b());
+            }
+
+
+    public void endGame(int deaths, int people){
+        int percentDied = (100*deaths)/people;
+        System.out.println(TextColor.YELLOW+ "In your 10 years as ruler, "+percentDied+"% of our people died.");
+
+        System.out.println(TextColor.YELLOW+ "\n\n********GAME OVER*******"+_b());
 
     }
-
 }
