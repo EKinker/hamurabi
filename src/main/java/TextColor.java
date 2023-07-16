@@ -1,5 +1,6 @@
 public class TextColor {
-
+//extra colors in case I wanted my console to look like unicorn vomit
+    //I didn't.
     public static final String RESET = "\u001B[0m";
     public static final String TEXT_BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";

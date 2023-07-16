@@ -12,15 +12,11 @@ public class Hammurabi {
     Scanner scanner = new Scanner(System.in);
 
 
-
-
     public static void main(String[] args) {
         new Hammurabi().playGame();
     }
 
     void playGame() {
-
-
         // declare local variables here: grain, population, etc.
         int people = 100, grainBushels = 2800, landAcres = 1000, landValue = 19, immigrants = 5, bushelsHarvested = 3000, foodEatenByRats = 200, year = 1;
         int peopleStarved = 0, changeToLand, bushelsFed, acresPlanted = 1000;
@@ -41,9 +37,10 @@ public class Hammurabi {
             people -= plagueDeaths(people); //15% chance of plague
             peopleStarved = starvationDeaths(people, bushelsFed);
             people -= peopleStarved;
-            if (uprising(people, peopleStarved)) {
-                gameActive = false;
-            }
+            gameActive = !uprising(people, peopleStarved);
+//            if (uprising(people, peopleStarved)) {
+//                gameActive = false;
+//            }
             immigrants = immigrants(people, landAcres, grainBushels);
             people += immigrants;
             bushelsHarvested = harvest(acresPlanted);
@@ -60,9 +57,11 @@ public class Hammurabi {
 
     public void printYearlyStatus(int year, int peopleStarved, int immigrants, int people, int bushelsHarvested, int bushelsRatted, int totalBushels, int landAcres, int landValue, int landPlanted) { //start each round with an update
         int harvestRate;
-        if (landPlanted==0){
+        if (landPlanted == 0) {
             harvestRate = 0;
-        } else {harvestRate =bushelsHarvested / landPlanted;}
+        } else {
+            harvestRate = bushelsHarvested / landPlanted;
+        }
         System.out.println(TextColor.PURPLE + "\n\n\nO great and wise Hammurabi!");
         System.out.printf(TextColor.BLUE + "You are in year %d of your ten year rule.\n" + _b(), year);
         System.out.println("In the previous year " + TextColor.RED + peopleStarved + _b() + " people starved to death.");
@@ -156,17 +155,19 @@ public class Hammurabi {
             everyoneDied();
             return true;
         }
-            int percentStarved = (100 * howManyPeopleStarved) / population;
-            if (percentStarved >= 45) {
-                System.out.println(TextColor.BRIGHT_RED + "\n\nToo many of our people have starved. Your subjects have revolted!" + _b());
-                return true;
-            }
+        int percentStarved = (100 * howManyPeopleStarved) / population;
+        if (percentStarved >= 45) {
+            System.out.println(TextColor.BRIGHT_RED + "\n\nToo many of our people have starved. Your subjects have revolted!" + _b());
+            return true;
+        }
 
         return false;
     }
 
     public int immigrants(int population, int acresOwned, int grainInStorage) { //
-        if (population == 0){return 0;}
+        if (population == 0) {
+            return 0;
+        }
         return (20 * acresOwned + grainInStorage) / (100 * population) + 1; //taken from ReadMe
     }
 
@@ -203,7 +204,7 @@ public class Hammurabi {
 
     }
 
-    public String b() { //bold
+    public String b() { //bold/highlight
         return TextColor.BRIGHT_WHITE;
     }
 
@@ -211,7 +212,7 @@ public class Hammurabi {
         return TextColor.RESET;
     }
 
-    public void everyoneDied(){
+    public void everyoneDied() {
         System.out.println(TextColor.BRIGHT_RED + "\n\nSir! We forgot to feed our people!  Everyone is dead!" + _b());
 
     }
